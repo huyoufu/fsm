@@ -13,7 +13,7 @@ public class FSMConfig {
 	
 	private long fsm_reconnect_interval=FSM_RECONNECT_INTERVAL;
 	
-	private long fsm_reconnect_num=FSM_HEART_INTERVAL;
+	private long fsm_reconnect_num=FSM_RECONNECT_NUM;
 
 	public long getFsm_heart_interval() {
 		return fsm_heart_interval;
