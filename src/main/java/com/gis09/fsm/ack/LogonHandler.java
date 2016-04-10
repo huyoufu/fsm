@@ -24,7 +24,7 @@ public class LogonHandler extends ChannelHandlerAdapter {
 		Message message=(Message) msg;
 		if (message.getHeader()!=null&&message.getHeader().getType()==Header.TYPE_ACK_RESP) {
 			System.out.println("登录成功");
-			ctx.writeAndFlush(buildLogon());//
+			ctx.writeAndFlush(buildLogon());
 		}else{
 			ctx.fireChannelRead(msg);
 		}
