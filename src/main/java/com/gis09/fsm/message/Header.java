@@ -16,8 +16,8 @@ public class Header {
 	public static final Byte TYPE_HEART_REQ=0x5; //heart_req 心跳请求消息
 	public static final Byte TYPE_HEART_RESP=0x6; //heart_resp 心跳应答消息
 	private int version=0x20160101;//版本号
+	private int length; //消息长度
 	private long sessionId;//sessionId 
-	private long length; //消息长度
 	private Byte type; //消息类型
 	private Byte priority; //消息优先级别
 	private Map<String, Object> attachment; //附件
@@ -27,18 +27,19 @@ public class Header {
 	public void setVersion(int version) {
 		this.version = version;
 	}
+	public int getLength() {
+		return length;
+	}
+	public void setLength(int length) {
+		this.length = length;
+	}
 	public long getSessionId() {
 		return sessionId;
 	}
 	public void setSessionId(long sessionId) {
 		this.sessionId = sessionId;
 	}
-	public long getLength() {
-		return length;
-	}
-	public void setLength(long length) {
-		this.length = length;
-	}
+	
 	public Byte getType() {
 		return type;
 	}
