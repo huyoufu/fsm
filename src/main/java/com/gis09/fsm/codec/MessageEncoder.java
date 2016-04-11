@@ -23,11 +23,12 @@ import com.gis09.fsm.message.Message;
 public class MessageEncoder extends MessageToMessageEncoder<Message> {
 	MarshallingEncoder marshallingEncoder;
 	
-	public MessageEncoder(MarshallingEncoder marshallingEncoder) throws Exception {
+	public MessageEncoder() throws Exception {
 		super();
 		this.marshallingEncoder = new MarshallingEncoder();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Message msg,
 			List<Object> out) throws Exception {
@@ -61,6 +62,7 @@ public class MessageEncoder extends MessageToMessageEncoder<Message> {
 			buf.writeInt(0);
 		}
 		buf.setInt(4, buf.readableBytes()); //这里是因为length的位置是4 所以
+		out.add(buf);
 	}
 
 }
