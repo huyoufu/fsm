@@ -15,7 +15,7 @@ public class FSMServer {
 			ServerBootstrap bootstrap=new ServerBootstrap();
 			bootstrap.group(boss,slavers).channel(NioServerSocketChannel.class)
 			.option(ChannelOption.SO_BACKLOG,1024)
-			.childHandler(null);
+			.childHandler(null);//
 			ChannelFuture bind = bootstrap.bind(port).sync();
 			bind.channel().closeFuture().sync();
 		} catch (Exception e) {
