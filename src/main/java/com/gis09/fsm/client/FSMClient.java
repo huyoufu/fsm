@@ -82,7 +82,7 @@ public class FSMClient implements BootAble {
 	public static void main(String[] args) {
 		FSMClient client=new FSMClient();
 		FSMConfig config=new FSMConfig();
-		config.setFsm_server_host("192.168.1.252");
+		config.setFsm_server_host("127.0.0.1");
 		
 		client.boot(config);
 	}
