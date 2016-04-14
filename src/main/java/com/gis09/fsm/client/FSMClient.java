@@ -49,11 +49,11 @@ public class FSMClient implements BootAble {
 						protected void initChannel(SocketChannel ch)
 								throws Exception {
 							ch.pipeline().addLast(
-									new MessageDecoder(1024 * 1024, 4, 4));
+									new MessageDecoder(1024 * 1024, 4, 4,-8));
 							ch.pipeline().addLast("messageEncoder",
 									new MessageEncoder());
 							ch.pipeline().addLast("readTimeoutHandler",
-									new ReadTimeoutHandler(50));
+									new ReadTimeoutHandler(20));
 							ch.pipeline().addLast("loginHandler",
 									new LoginHandler());
 							ch.pipeline().addLast("heartReqHandler",
@@ -64,17 +64,16 @@ public class FSMClient implements BootAble {
 			future.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
-			group.shutdownGracefully();
 		} finally {
 			executorService.execute(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(15);
+						Thread.sleep(15000);
+						connect(host, port);// 发起重连
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
-					connect(host, port);// 发起重连
 				}
 			});
 		}
@@ -82,6 +81,9 @@ public class FSMClient implements BootAble {
 
 	public static void main(String[] args) {
 		FSMClient client=new FSMClient();
-		client.boot();
+		FSMConfig config=new FSMConfig();
+		config.setFsm_server_host("192.168.1.252");
+		
+		client.boot(config);
 	}
 }

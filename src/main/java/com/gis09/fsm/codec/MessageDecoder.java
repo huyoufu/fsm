@@ -23,16 +23,15 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 public class MessageDecoder extends LengthFieldBasedFrameDecoder {
 	MarshallingDecoder marshallingDecoder;
 	public MessageDecoder(int maxFrameLength, int lengthFieldOffset,
-			int lengthFieldLength) throws Exception {
-		super(maxFrameLength, lengthFieldOffset, lengthFieldLength);
+			int lengthFieldLength,int lengthAdjustment) throws Exception {
+		super(maxFrameLength, lengthFieldOffset, lengthFieldLength,lengthAdjustment,0);
 		this.marshallingDecoder=new MarshallingDecoder();
 	}
 
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, ByteBuf in)
 			throws Exception {
-		//ByteBuf buf = (ByteBuf) super.decode(ctx, in);
-		ByteBuf buf = (ByteBuf)in;
+		ByteBuf buf = (ByteBuf) super.decode(ctx, in);
 		if (buf==null) {
 			return null;
 		}

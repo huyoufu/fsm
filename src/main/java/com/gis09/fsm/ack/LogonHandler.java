@@ -1,5 +1,8 @@
 package com.gis09.fsm.ack;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
 
@@ -11,29 +14,32 @@ import io.netty.channel.ChannelHandlerContext;
  * @description 处理登录请求handler
  */
 public class LogonHandler extends ChannelHandlerAdapter {
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-			throws Exception {
-		super.exceptionCaught(ctx, cause);
-	}
+	  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
+	  {
+	    super.exceptionCaught(ctx, cause);
+	  }
 
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg)
-			throws Exception {
-		Message message=(Message) msg;
-		if (message.getHeader()!=null&&message.getHeader().getType()==Header.TYPE_ACK_REQ) {
-			System.out.println("登录成功");
-			ctx.writeAndFlush(buildLogon());
-		}else{
-			ctx.fireChannelRead(msg);
-		}
-	}
-	private Message buildLogon(){
-		Message message=new Message();
-		Header header=new Header();
-		header.setType(Header.TYPE_ACK_RESP);
-		message.setHeader(header);
-		return message;
-	}
+	  public void channelRead(ChannelHandlerContext ctx, Object msg)
+	    throws Exception
+	  {
+	    Message message = (Message)msg;
+	    if ((message.getHeader() != null) && (message.getHeader().getType() == Header.TYPE_ACK_REQ)) {
+	      if (log.isInfoEnabled()) {
+	        log.info("有客户端来登录了...");
+	      }
+	      ctx.writeAndFlush(buildLogon());
+	    } else {
+	      ctx.fireChannelRead(msg);
+	    }
+	  }
+
+	  private Message buildLogon() { Message message = new Message();
+	    Header header = new Header();
+	    header.setType(Header.TYPE_ACK_RESP);
+	    header.setSessionId(System.currentTimeMillis());
+	    message.setHeader(header);
+	    return message;
+	  }
 }

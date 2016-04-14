@@ -3,6 +3,7 @@ package com.gis09.fsm.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import com.gis09.fsm.message.Message;
  * @author xiaohu 2016年4月6日下午10:27:20
  * @description Marshall的消息编码器
  */
-public class MessageEncoder extends MessageToMessageEncoder<Message> {
+public class MessageEncoder extends MessageToByteEncoder<Message> {
 	MarshallingEncoder marshallingEncoder;
 	
 	public MessageEncoder() throws Exception {
@@ -28,7 +29,41 @@ public class MessageEncoder extends MessageToMessageEncoder<Message> {
 		this.marshallingEncoder = new MarshallingEncoder();
 	}
 
-	@SuppressWarnings("unused")
+	@Override
+	protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
+		if (msg==null||msg.getHeader()==null) {
+			throw new RuntimeException("the msg is null");
+		}
+		ByteBuf buf=out;
+		buf.writeInt(msg.getHeader().getVersion());
+		buf.writeInt(msg.getHeader().getLength());
+		buf.writeLong(msg.getHeader().getSessionId());
+		buf.writeByte(msg.getHeader().getType());
+		buf.writeByte(msg.getHeader().getPriority());
+		buf.writeInt(msg.getHeader().getAttachment().size());
+		String key=null;
+		byte[] key_array=null;
+		Object value=null;
+		for (Entry<String, Object> entry : msg.getHeader().getAttachment().entrySet()) {
+			key=entry.getKey();
+			key_array=key.getBytes("utf-8");
+			buf.writeInt(key_array.length);
+			buf.writeBytes(key_array);
+			value=entry.getValue();
+			marshallingEncoder.encode(msg, buf);
+		}
+		key=null;
+		key_array=null;
+		value=null;
+		if (msg.getBody()!=null) {
+			marshallingEncoder.encode(msg.getBody(), buf);
+		}else{
+			buf.writeInt(0);
+		}
+		buf.setInt(4, buf.readableBytes()); //这里是因为length的位置是4 所以
+	}
+
+	/*@SuppressWarnings("unused")
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Message msg,
 			List<Object> out) throws Exception {
@@ -63,7 +98,8 @@ public class MessageEncoder extends MessageToMessageEncoder<Message> {
 		}
 		buf.setInt(4, buf.readableBytes()); //这里是因为length的位置是4 所以
 		out.add(buf);
-	}
+	}*/
+	
 
 }
 

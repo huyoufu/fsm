@@ -26,7 +26,7 @@ public class FSMServer {
 			.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new MessageDecoder(1024*1024, 4, 4));
+					ch.pipeline().addLast(new MessageDecoder(1024*1024, 4, 4,-8));
 					ch.pipeline().addLast("messageEncoder", new MessageEncoder());
 					ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(50));
 					ch.pipeline().addLast("logonHandler",new LogonHandler());
