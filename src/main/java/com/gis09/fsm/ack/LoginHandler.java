@@ -1,15 +1,13 @@
 package com.gis09.fsm.ack;
 
+import io.netty.channel.ChannelHandlerAdapter;
+import io.netty.channel.ChannelHandlerContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
-import com.gis09.fsm.transport.SimpleTransport;
-
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.socket.SocketChannel;
 /**
  * @author xiaohu
  * 2016年4月10日下午8:50:23

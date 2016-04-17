@@ -51,10 +51,14 @@ public class SimpleTransport extends BaseTransport {
 			}
 		});
 		System.out.println("初始化");
+		thread.setDaemon(false);
+		System.out.println(thread.isDaemon());
 		thread.start();
 	}
 	public void _init(FSMConfig config){
+		System.out.println("初始化1");
 		EventLoopGroup group = new NioEventLoopGroup();
+		System.out.println("初始化2");
 		try {
 			Bootstrap bootstrap = new Bootstrap();
 			bootstrap.group(group).channel(NioSocketChannel.class)
@@ -78,6 +82,7 @@ public class SimpleTransport extends BaseTransport {
 						}
 					});
 			ChannelFuture future = bootstrap.connect(config.getFsm_server_host(), config.getFsm_port()).sync();
+			System.out.println("客户端连接成功");
 			future.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();

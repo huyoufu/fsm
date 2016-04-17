@@ -23,7 +23,6 @@ public class BusinessReqHandler extends ChannelHandlerAdapter  {
 	public void channelRead(final ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		//能走到这里肯定是已经登录过的
-		System.out.println("登录成功后的了");
 		ctx.executor().scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
