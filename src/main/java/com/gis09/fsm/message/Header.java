@@ -11,11 +11,13 @@ import java.util.Map;
 public class Header {
 	public static final Byte TYPE_BI_REQ=0x0; //业务请求消息
 	public static final Byte TYPE_BI_RESP=0x1; //业务应答消息
-	public static final Byte TYPE_BI_2R=0x2; //即使请求也是应答
+	public static final Byte TYPE_BI_2R=0x2; //双通道业务消息
 	public static final Byte TYPE_ACK_REQ=0x3; //ack_req 握手请求 消息
 	public static final Byte TYPE_ACK_RESP=0x4; //ack_resp 握手应答消息
 	public static final Byte TYPE_HEART_REQ=0x5; //heart_req 心跳请求消息
 	public static final Byte TYPE_HEART_RESP=0x6; //heart_resp 心跳应答消息
+	public static final Byte TYPE_CLOSE_REQ=0X7;//链路关闭请求消息
+	public static final byte TYPE_CLOSE_RESP=0x8;//链路关闭回应消息
 	public static final byte TYPE_PRIORITY_DEFAULT=0x17;
 	private int version=0x20160101;//版本号
 	private int length; //消息长度

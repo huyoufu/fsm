@@ -18,6 +18,7 @@ import io.netty.util.concurrent.ScheduledFuture;
  */
 public class HeartReqHandler extends ChannelHandlerAdapter {
 	private Logger log;
+	@SuppressWarnings("rawtypes")
 	private volatile ScheduledFuture heartbeat;
 
 	public HeartReqHandler() {
@@ -45,7 +46,8 @@ public class HeartReqHandler extends ChannelHandlerAdapter {
 			}
 			this.heartbeat = null;
 		}
-		ctx.close();
+		ctx.close();//关闭当前链路
+		throw new RuntimeException(" 发生异常 关闭客户端 等待重连");
 	}
 
 	private class HeartTask implements Runnable {

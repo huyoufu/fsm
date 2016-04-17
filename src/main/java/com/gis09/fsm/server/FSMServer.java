@@ -1,6 +1,7 @@
 package com.gis09.fsm.server;
 
 import com.gis09.fsm.ack.LogonHandler;
+import com.gis09.fsm.business.BusinessRespHandler;
 import com.gis09.fsm.codec.MessageDecoder;
 import com.gis09.fsm.codec.MessageEncoder;
 import com.gis09.fsm.heart.HeartRespHandler;
@@ -31,6 +32,7 @@ public class FSMServer {
 					ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(50));
 					ch.pipeline().addLast("logonHandler",new LogonHandler());
 					ch.pipeline().addLast("heartReqHandler",new HeartRespHandler());
+					ch.pipeline().addLast("businessRespHandler",new BusinessRespHandler());
 				}
 			});
 			ChannelFuture bind = bootstrap.bind(port).sync();
