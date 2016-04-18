@@ -36,5 +36,10 @@ public class SimpleStore implements Store {
 	public boolean supportExpired() {
 		return SUPPORTEXPIRED;
 	}
+
+	@Override
+	public long getId() {
+		return 0;
+	}
 	
 }

@@ -12,5 +12,21 @@ public class StoreMessage implements StoreAble {
 	public StoreAble warpper(Message message){
 		return null;
 	}
+	@Override
+	public Object getOri() {
+		return null;
+	}
+	@Override
+	public long getHits() {
+		return 0;
+	}
+	@Override
+	public long getlastHitTime() {
+		return 0;
+	}
+	@Override
+	public long getStoredTime() {
+		return 0;
+	}
 
 }

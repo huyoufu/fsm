@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description 每一个库对应一个过期表
  */
 public class ExpireTable {
-	private int storeId;//所属store的id号
+	private long storeId;//所属store的id号
 	private final Map<String, Long> table=new ConcurrentHashMap<String, Long>();
-	public ExpireTable(int storeId) {
+	public ExpireTable(long storeId) {
 		super();
 		this.storeId = storeId;
 	}
@@ -26,7 +26,7 @@ public class ExpireTable {
 	public void del(String key){
 		table.remove(key);
 	}
-	public int getStoreId() {
+	public long getStoreId() {
 		return storeId;
 	}
 	public void setStoreId(int storeId) {

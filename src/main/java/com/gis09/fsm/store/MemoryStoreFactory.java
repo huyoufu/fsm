@@ -9,7 +9,6 @@ public class MemoryStoreFactory extends AbstractStoreFactory {
 
 	@Override
 	public Store create(int id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

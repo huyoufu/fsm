@@ -5,6 +5,7 @@ package com.gis09.fsm.store;
  * @description 仓库 存储信息的仓库
  */
 public interface Store {
+	long getId();
 	void set(String key,StoreAble value);
 	void set(String key,StoreAble value,long expiredTime);
 	StoreAble get(String key);
