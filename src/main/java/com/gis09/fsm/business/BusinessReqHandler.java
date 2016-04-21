@@ -23,15 +23,16 @@ public class BusinessReqHandler extends ChannelHandlerAdapter  {
 	public void channelRead(final ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		//能走到这里肯定是已经登录过的
-		ctx.executor().scheduleAtFixedRate(new Runnable() {
+		/*ctx.executor().scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				Message message = MessageContainer.get();
+				//Message message = MessageContainer.get();
+				Message message = null;
 				if (message!=null) {
 					ctx.channel().writeAndFlush(message);
 				}
 			}
-		}, 0, 1, TimeUnit.SECONDS);
+		}, 0, 1, TimeUnit.SECONDS);*/
 		
 	}
 }

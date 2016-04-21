@@ -41,9 +41,9 @@ public class HeartReqHandler extends ChannelHandlerAdapter {
 		if (this.heartbeat != null) { 
 			boolean cancel = this.heartbeat.cancel(true);
 			if (cancel) {
-				System.out.println("停止成功");
+				log.info("心跳停止成功");
 			}else{
-				System.out.println("停止");
+				log.info("心跳停止失败");
 			}
 			this.heartbeat = null;
 		}

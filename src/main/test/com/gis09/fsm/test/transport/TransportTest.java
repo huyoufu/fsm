@@ -1,5 +1,7 @@
 package com.gis09.fsm.test.transport;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.gis09.fsm.common.config.FSMConfig;
@@ -15,8 +17,59 @@ public class TransportTest {
 	@Test
 	public void sendTest(){
 		SimpleTransport transport=new SimpleTransport();
-		transport.send("我要发送业务消息:小俊子你好");
 		FSMConfig config=new FSMConfig();
-		transport._init(config);
+		transport.init(config);
+		transport.start();
+		transport.send("我要发送业务消息:小明你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		transport.send("我要发送业务消息:小小明你好子你好");
+		try {
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000);
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			transport.send("我要发送业务消息:小小明你好子你好"+new Date());
+			Thread.sleep(1000000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

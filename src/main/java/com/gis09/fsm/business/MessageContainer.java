@@ -12,10 +12,10 @@ import com.gis09.fsm.message.Message;
 public class MessageContainer {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static Queue<Message> wait2send=new ArrayBlockingQueue(1024);
-	public static void add(Message message){
+	public void add(Message message){
 		wait2send.add(message);
 	}
-	public static Message get(){
+	public  Message get(){
 		return wait2send.poll();
 	}
 }
