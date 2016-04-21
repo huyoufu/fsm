@@ -106,10 +106,19 @@ public class SimpleTransport extends BaseTransport {
 		}
 		return channel4send;
 	}
-	//初始化
+	/**
+	 * @description 初始化
+	 * @author 户有福
+	 * @param config
+	 */
 	public void init(final FSMConfig config) {
-		this.fsmConfig=config;
+		if (config!=null) {
+			this.fsmConfig=config;//初始化config
+		}
+		this.fsmConfig=new FSMConfig();
+		//初始化 消息容器
 		this.messageContainer=new MessageContainer();
+		//初始化启动类的一些参数配置
 		bootstrap.group(group).channel(NioSocketChannel.class)
 				.option(ChannelOption.TCP_NODELAY, true)
 				.handler(new ChannelInitializer<SocketChannel>() {
@@ -117,17 +126,17 @@ public class SimpleTransport extends BaseTransport {
 					protected void initChannel(SocketChannel ch)
 							throws Exception {
 						ch.pipeline().addLast(
-								new MessageDecoder(1024 * 1024, 4, 4, -8));
+								new MessageDecoder(1024 * 1024, 4, 4, -8)); //添加message decoder
 						ch.pipeline().addLast("messageEncoder",
-								new MessageEncoder());
+								new MessageEncoder()); //添加encoder
 						ch.pipeline().addLast("readTimeoutHandler",
-								new ReadTimeoutHandler(20));
+								new ReadTimeoutHandler(20)); //添加超时读
 						ch.pipeline().addLast("loginHandler",
-								new LoginHandler());
+								new LoginHandler()); //添加登录handler
 						ch.pipeline().addLast("heartReqHandler",
-								new HeartReqHandler());
+								new HeartReqHandler()); //添加心跳请求handler
 						ch.pipeline().addLast("businessReqHandler",
-								new BusinessReqHandler());
+								new BusinessReqHandler()); //添加业务请求handler 正在考虑是否需要
 					}
 				});
 	}
