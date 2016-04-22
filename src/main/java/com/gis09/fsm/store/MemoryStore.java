@@ -33,19 +33,16 @@ public class MemoryStore implements Store {
 
 	@Override
 	public StoreAble get(String key) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void del(String key) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean supportExpired() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
