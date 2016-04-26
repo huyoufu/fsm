@@ -17,24 +17,24 @@ import com.gis09.fsm.ack.LoginHandler;
 import com.gis09.fsm.boot.BootAble;
 import com.gis09.fsm.codec.MessageDecoder;
 import com.gis09.fsm.codec.MessageEncoder;
+import com.gis09.fsm.common.config.ClientConfig;
 import com.gis09.fsm.common.config.FSMConfig;
 import com.gis09.fsm.heart.HeartReqHandler;
 
 /**
- * @author xiaohu 2016年4月10日上午12:56:57
+ * @author xiaohu 
+ * 2016年4月10日上午12:56:57
  * @description fsm客户端
  */
-public class FSMClient implements BootAble {
+public class FSMClient {
 	private ScheduledExecutorService executorService = Executors
 			.newScheduledThreadPool(1);
 
-	@Override
 	public void boot() {
-		boot(new FSMConfig());
+		boot(new ClientConfig());
 	}
 
-	@Override
-	public void boot(FSMConfig fsmConfig) {
+	public void boot(ClientConfig fsmConfig) {
 		connect(fsmConfig.getFsm_server_host(), fsmConfig.getFsm_port());
 	}
 
@@ -81,9 +81,8 @@ public class FSMClient implements BootAble {
 
 	public static void main(String[] args) {
 		FSMClient client=new FSMClient();
-		FSMConfig config=new FSMConfig();
+		ClientConfig config=new ClientConfig();
 		config.setFsm_server_host("127.0.0.1");
-		
 		client.boot(config);
 	}
 }

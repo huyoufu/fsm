@@ -40,6 +40,7 @@ public class LoginHandler extends ChannelHandlerAdapter {
 	      } else {
 	        if (this.log.isInfoEnabled()) {
 	          this.log.info("登录成功 返回的sessionId 是 " + message.getHeader().getSessionId());
+	          //返回一个sessionId 这时候要把该SessionId 保存起来
 	        }
 	        ctx.fireChannelRead(msg);
 	      }

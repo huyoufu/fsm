@@ -1,7 +1,6 @@
 package com.gis09.fsm.session;
 
 import com.gis09.fsm.id.IdGenerator;
-import com.gis09.fsm.id.MemoryIdGeneratorProvider;
 import com.gis09.fsm.store.MemoryStoreFactory;
 import com.gis09.fsm.store.Store;
 import com.gis09.fsm.store.StoreAble;

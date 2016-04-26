@@ -10,12 +10,49 @@ import com.gis09.fsm.message.Message;
  * @description 待发送消息的容器
  */
 public class MessageContainer {
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static Queue<Message> wait2send=new ArrayBlockingQueue(1024);
+	private static final int DEFAULT_PERCENT=80;
+	private static final int DEFAULT_CAPACITY=1024;
+	private int percent=DEFAULT_PERCENT; // 百分比
+	private int capacity=DEFAULT_CAPACITY; //队列大小
+	private  Queue<Message> wait2send;
+	public MessageContainer(int percent) {
+		super();
+		new MessageContainer(percent,DEFAULT_CAPACITY);
+	}
+	public MessageContainer(int percent, int capacity) {
+		super();
+		this.percent = percent;
+		this.capacity = capacity;
+		init();
+	}
+
+	/**
+	 * 
+	 * @description 初始化 创建容器
+	 */
+	private void init(){
+		wait2send=new ArrayBlockingQueue<Message>(capacity);
+	}
+	
+	public MessageContainer() {
+		new MessageContainer(DEFAULT_PERCENT,DEFAULT_CAPACITY);
+	}
 	public void add(Message message){
 		wait2send.add(message);
 	}
 	public  Message get(){
 		return wait2send.poll();
 	}
+	public int getPercent() {
+		return percent;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	
 }
