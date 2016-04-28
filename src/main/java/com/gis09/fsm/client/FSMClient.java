@@ -3,6 +3,14 @@ package com.gis09.fsm.client;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.gis09.fsm.ack.LoginHandler;
+import com.gis09.fsm.codec.MessageDecoder;
+import com.gis09.fsm.codec.MessageEncoder;
+import com.gis09.fsm.common.config.ClientConfig;
+import com.gis09.fsm.heart.HeartReqHandler;
+import com.gis09.fsm.session.DefaultSessionContext;
+import com.gis09.fsm.session.SessionContext;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,14 +21,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
-import com.gis09.fsm.ack.LoginHandler;
-import com.gis09.fsm.boot.BootAble;
-import com.gis09.fsm.codec.MessageDecoder;
-import com.gis09.fsm.codec.MessageEncoder;
-import com.gis09.fsm.common.config.ClientConfig;
-import com.gis09.fsm.common.config.FSMConfig;
-import com.gis09.fsm.heart.HeartReqHandler;
-
 /**
  * @author xiaohu 
  * 2016年4月10日上午12:56:57
@@ -29,7 +29,8 @@ import com.gis09.fsm.heart.HeartReqHandler;
 public class FSMClient {
 	private ScheduledExecutorService executorService = Executors
 			.newScheduledThreadPool(1);
-
+	private volatile SessionContext sessionContext =DefaultSessionContext.getInstance(); //这里是单例模式 //内置一个sessionContext 用来保存session
+	
 	public void boot() {
 		boot(new ClientConfig());
 	}
@@ -55,9 +56,9 @@ public class FSMClient {
 							ch.pipeline().addLast("readTimeoutHandler",
 									new ReadTimeoutHandler(20));
 							ch.pipeline().addLast("loginHandler",
-									new LoginHandler());
+									new LoginHandler(sessionContext));//登录处理
 							ch.pipeline().addLast("heartReqHandler",
-									new HeartReqHandler());
+									new HeartReqHandler(sessionContext)); //处理
 						}
 					});
 			ChannelFuture future = bootstrap.connect(host, port).sync();
@@ -85,4 +86,13 @@ public class FSMClient {
 		config.setFsm_server_host("127.0.0.1");
 		client.boot(config);
 	}
+
+	public SessionContext getSessionContext() {
+		return sessionContext;
+	}
+
+	public void setSessionContext(SessionContext sessionContext) {
+		this.sessionContext = sessionContext;
+	}
+	
 }

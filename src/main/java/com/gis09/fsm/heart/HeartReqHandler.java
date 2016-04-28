@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
+import com.gis09.fsm.session.SessionContext;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,13 +18,17 @@ import io.netty.util.concurrent.ScheduledFuture;
  * @description 心跳请求处理
  */
 public class HeartReqHandler extends ChannelHandlerAdapter {
-	private Logger log;
+	private Logger log=LoggerFactory.getLogger(getClass());
 	@SuppressWarnings("rawtypes")
 	private volatile ScheduledFuture heartbeat;
-
+	private volatile SessionContext sessionContext; //集成session
 	public HeartReqHandler() {
-		this.log = LoggerFactory.getLogger(getClass());
 	}
+	public HeartReqHandler(SessionContext sessionContext) {
+		super();
+		this.sessionContext = sessionContext;
+	}
+
 
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Message message = (Message) msg;

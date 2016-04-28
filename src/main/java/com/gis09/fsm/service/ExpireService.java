@@ -14,5 +14,9 @@ public class ExpireService implements FSMService{
 	public void start() {
 		log.info("启动 key过期扫描服务");
 	}
+	@Override
+	public void shutDown() {
+		
+	}
 
 }
