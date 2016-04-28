@@ -5,10 +5,10 @@ package com.gis09.fsm.store;
  * @description 可存储对象
  */
 public class StoreAbleObject implements StoreAble{
-	private Object ori;
-	private long hits;
-	private long lastHitTime;
-	private long storedTime;
+	private Object ori;//可存储对象的原有对象
+	private long hits;//一共被命中多少次
+	private long lastHitTime;//上次被查询的时间的毫秒值
+	private long storedTime;//存储时间的毫秒值
 	
 	@Override
 	public long getHits() {

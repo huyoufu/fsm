@@ -6,6 +6,7 @@ package com.gis09.fsm.store;
  */
 public interface Store {
 	long getId();
+	String getName();
 	void set(String key,StoreAble value);
 	void set(String key,StoreAble value,long expiredTime);
 	StoreAble get(String key);

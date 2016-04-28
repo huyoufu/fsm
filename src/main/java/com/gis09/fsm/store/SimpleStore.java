@@ -41,5 +41,10 @@ public class SimpleStore implements Store {
 	public long getId() {
 		return 0;
 	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
 	
 }

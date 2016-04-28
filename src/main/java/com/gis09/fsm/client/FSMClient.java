@@ -1,5 +1,7 @@
 package com.gis09.fsm.client;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -10,6 +12,7 @@ import com.gis09.fsm.common.config.ClientConfig;
 import com.gis09.fsm.heart.HeartReqHandler;
 import com.gis09.fsm.session.DefaultSessionContext;
 import com.gis09.fsm.session.SessionContext;
+import com.gis09.fsm.subscription.Topic;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -30,7 +33,7 @@ public class FSMClient {
 	private ScheduledExecutorService executorService = Executors
 			.newScheduledThreadPool(1);
 	private volatile SessionContext sessionContext =DefaultSessionContext.getInstance(); //这里是单例模式 //内置一个sessionContext 用来保存session
-	
+	private volatile List<Topic> topics=new ArrayList<Topic>(); //客户端订阅的主题列表
 	public void boot() {
 		boot(new ClientConfig());
 	}

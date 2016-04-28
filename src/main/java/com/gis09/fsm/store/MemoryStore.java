@@ -51,4 +51,10 @@ public class MemoryStore implements Store {
 		return id;
 	}
 
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
