@@ -3,6 +3,7 @@ package com.gis09.fsm.ack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gis09.fsm.id.IdGenerator;
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
 
@@ -28,6 +29,7 @@ public class LogonHandler extends ChannelHandlerAdapter {
 	    if ((message.getHeader() != null) && (message.getHeader().getType() == Header.TYPE_ACK_REQ)) {
 	      if (log.isInfoEnabled()) {
 	        log.info("有客户端来登录了...");
+	        log.info("客户端:username is {},密码是 ******",message.getHeader().getAttachment().get(""));
 	      }
 	      ctx.writeAndFlush(buildLogon());
 	    } else {
@@ -38,7 +40,7 @@ public class LogonHandler extends ChannelHandlerAdapter {
 	  private Message buildLogon() { Message message = new Message();
 	    Header header = new Header();
 	    header.setType(Header.TYPE_ACK_RESP);
-	    header.setSessionId(System.currentTimeMillis());
+	    header.setSessionId(IdGenerator.timeRand());
 	    message.setHeader(header);
 	    return message;
 	  }
