@@ -1,20 +1,18 @@
 package com.gis09.fsm.client;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.gis09.fsm.ack.LoginHandler;
 import com.gis09.fsm.codec.MessageDecoder;
 import com.gis09.fsm.codec.MessageEncoder;
-import com.gis09.fsm.common.config.ClientConfig;
 import com.gis09.fsm.heart.HeartReqHandler;
-import com.gis09.fsm.session.DefaultSessionContext;
-import com.gis09.fsm.session.SessionContext;
+import com.gis09.fsm.service.FSMService;
+import com.gis09.fsm.session.Session;
 import com.gis09.fsm.subscription.Topic;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -29,23 +27,28 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
  * 2016年4月10日上午12:56:57
  * @description fsm客户端
  */
-public class FSMClient {
+public class FSMClient implements FSMService {
 	private ScheduledExecutorService executorService = Executors
 			.newScheduledThreadPool(1);
-	private volatile SessionContext sessionContext =DefaultSessionContext.getInstance(); //这里是单例模式 //内置一个sessionContext 用来保存session
-	private volatile List<Topic> topics=new ArrayList<Topic>(); //客户端订阅的主题列表
-	public void boot() {
-		boot(new ClientConfig());
+	private Bootstrap bootstrap = new Bootstrap();// 创建一个启动器
+	private EventLoopGroup group = new NioEventLoopGroup();
+	private Channel channel;
+	private volatile Session session;
+	private ClientConfig clientConfig;
+	/**
+	 * 构造函数 必须传入一个clientConfig
+	 * @param clientConfig
+	 */
+	public FSMClient(ClientConfig clientConfig) {
+		super();
+		this.clientConfig = clientConfig;
+		new LoginHandler(this);
 	}
 
-	public void boot(ClientConfig fsmConfig) {
-		connect(fsmConfig.getFsm_server_host(), fsmConfig.getFsm_port());
-	}
-
-	public void connect(final String host, final int port) {
-		EventLoopGroup group = new NioEventLoopGroup();
+	public void connect() {
+		final LoginHandler loginHandler=new LoginHandler(this);
+		final HeartReqHandler heartReqHandler=new HeartReqHandler();
 		try {
-			Bootstrap bootstrap = new Bootstrap();
 			bootstrap.group(group).channel(NioSocketChannel.class)
 					.option(ChannelOption.TCP_NODELAY, true)
 					.handler(new ChannelInitializer<SocketChannel>() {
@@ -57,15 +60,16 @@ public class FSMClient {
 							ch.pipeline().addLast("messageEncoder",
 									new MessageEncoder());
 							ch.pipeline().addLast("readTimeoutHandler",
-									new ReadTimeoutHandler(20));
+									new ReadTimeoutHandler(clientConfig.getReadTimeOut()));
 							ch.pipeline().addLast("loginHandler",
-									new LoginHandler(sessionContext));//登录处理
+									loginHandler);//登录处理
 							ch.pipeline().addLast("heartReqHandler",
-									new HeartReqHandler(sessionContext)); //处理
+									heartReqHandler); //处理心跳
 						}
 					});
-			ChannelFuture future = bootstrap.connect(host, port).sync();
-			future.channel().closeFuture().sync();
+			ChannelFuture future = bootstrap.connect(clientConfig.getServerHost(), clientConfig.getServerPort()).sync();
+			channel = future.channel();
+			channel.closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -73,8 +77,8 @@ public class FSMClient {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(15000);
-						connect(host, port);// 发起重连
+						Thread.sleep(clientConfig.getReconnectInterval());
+						connect();// 发起重连
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -82,20 +86,26 @@ public class FSMClient {
 			});
 		}
 	}
-
-	public static void main(String[] args) {
-		FSMClient client=new FSMClient();
-		ClientConfig config=new ClientConfig();
-		config.setFsm_server_host("127.0.0.1");
-		client.boot(config);
+	public void addTopic(Topic topic){
+		//添加一个topic
+		if (channel.isOpen()) {
+			
+		}
+	}
+	//获取当前的session
+	public Session getSession() {
+		return session;
+	}
+	@Override
+	public void start() {
+		
 	}
 
-	public SessionContext getSessionContext() {
-		return sessionContext;
+	@Override
+	public void shutDown() {
+		
 	}
-
-	public void setSessionContext(SessionContext sessionContext) {
-		this.sessionContext = sessionContext;
+	public ClientConfig getClientConfig() {
+		return clientConfig;
 	}
-	
 }

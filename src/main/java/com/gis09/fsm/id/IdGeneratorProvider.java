@@ -19,4 +19,6 @@ public interface IdGeneratorProvider {
 	 * @description 递增
 	 */
 	int increment();
+	
+	long timeRand();
 }

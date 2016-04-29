@@ -14,4 +14,9 @@ public class MemoryIdGeneratorProvider implements IdGeneratorProvider {
 		return incre++;
 	}
 
+	@Override
+	public long timeRand() {
+		return System.nanoTime(); //这里我们简单的使用纳秒值来做唯一值 可以说不会说问题的
+	}
+
 }

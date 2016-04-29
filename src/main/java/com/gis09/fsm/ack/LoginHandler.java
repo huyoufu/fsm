@@ -6,8 +6,10 @@ import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.gis09.fsm.client.FSMClient;
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
+import com.gis09.fsm.session.Session;
 import com.gis09.fsm.session.SessionContext;
 
 /**
@@ -16,14 +18,10 @@ import com.gis09.fsm.session.SessionContext;
  */
 public class LoginHandler extends ChannelHandlerAdapter {
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private volatile SessionContext sessionContext;// 内部集成当前的sessionContext
-	
-	public LoginHandler() {
+	private FSMClient fsmClient;//聚合客户端
+	public LoginHandler(FSMClient fsmClient) {
 		super();
-	}
-	public LoginHandler(SessionContext sessionContext) {
-		super();
-		this.sessionContext = sessionContext;
+		this.fsmClient = fsmClient;
 	}
 
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -48,6 +46,8 @@ public class LoginHandler extends ChannelHandlerAdapter {
 					this.log.info("登录成功 返回的sessionId 是 " + message.getHeader().getSessionId());
 					// 返回一个sessionId 这时候要把该SessionId 保存起来
 				}
+				//将sessionid设置到当前session中
+				this.fsmClient.getSession().setSessionId(String.valueOf(message.getHeader().getSessionId()));
 				ctx.fireChannelRead(msg);
 			}
 		} else {

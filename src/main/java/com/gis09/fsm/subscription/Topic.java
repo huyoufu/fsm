@@ -45,15 +45,6 @@ public class Topic {
 			return name.matches(reg_name);
 		}
 	}
-	public static void main(String[] args) {
-		Topic parent=new Topic("_11c.....om.the....111m...is");
-		Topic topic=new Topic("xxx",parent);
-		System.out.println(topic.getName());
-		System.out.println(topic.getParent().getName());
-		String reg="^[a-zA-Z0-9\\.]+";
-		String name="www.themis.";
-		System.out.println(name.matches(reg));
-	}
 	private String _trim(String content,String trim){
 		StringBuffer sb=new StringBuffer();
 		for (int i = 0; i < content.length(); i++) {

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gis09.fsm.message.Header;
 import com.gis09.fsm.message.Message;
+import com.gis09.fsm.session.Session;
 import com.gis09.fsm.session.SessionContext;
 
 import io.netty.channel.ChannelHandlerAdapter;
@@ -30,6 +31,8 @@ public class HeartReqHandler extends ChannelHandlerAdapter {
 	}
 
 
+	public HeartReqHandler(Session session) {
+	}
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Message message = (Message) msg;
 		if ((message.getHeader() != null) && (message.getHeader().getType() == Header.TYPE_ACK_RESP)) {
@@ -71,6 +74,7 @@ public class HeartReqHandler extends ChannelHandlerAdapter {
 		private Message buildHeartReq() {
 			Message message = new Message();
 			Header header = new Header();
+			header.setSessionId(1l);
 			header.setType(Header.TYPE_HEART_REQ);
 			message.setHeader(header);
 			return message;

@@ -132,7 +132,7 @@ public class SimpleTransport extends BaseTransport {
 						ch.pipeline().addLast("readTimeoutHandler",
 								new ReadTimeoutHandler(20)); //添加超时读
 						ch.pipeline().addLast("loginHandler",
-								new LoginHandler()); //添加登录handler
+								new LoginHandler(null)); //添加登录handler
 						ch.pipeline().addLast("heartReqHandler",
 								new HeartReqHandler()); //添加心跳请求handler
 						ch.pipeline().addLast("businessReqHandler",

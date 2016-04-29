@@ -27,5 +27,12 @@ public class IdGenerator {
 	public static int increment(){
 		return PROVIDER.increment();
 	}
-	
+	/**
+	 * 
+	 * @description 根据时间生成的唯一码
+	 * @return
+	 */
+	public static long timeRand(){
+		return PROVIDER.timeRand();
+	}
 }
