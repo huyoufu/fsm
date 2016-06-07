@@ -26,7 +26,6 @@ public class FSMServer {
 	 */
 	private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
 	private volatile ServerConfig serverConfig; //聚合serverconfig
-	private SessionContext sessionContext;
 	public void bind(int port){
 		EventLoopGroup boss=new NioEventLoopGroup();
 		EventLoopGroup slavers=new NioEventLoopGroup();

@@ -1,16 +1,5 @@
 package com.gis09.fsm.client;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-import com.gis09.fsm.ack.LoginHandler;
-import com.gis09.fsm.codec.MessageDecoder;
-import com.gis09.fsm.codec.MessageEncoder;
-import com.gis09.fsm.heart.HeartReqHandler;
-import com.gis09.fsm.service.FSMService;
-import com.gis09.fsm.session.Session;
-import com.gis09.fsm.subscription.Topic;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -22,19 +11,35 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.gis09.fsm.ack.LoginHandler;
+import com.gis09.fsm.codec.MessageDecoder;
+import com.gis09.fsm.codec.MessageEncoder;
+import com.gis09.fsm.heart.HeartReqHandler;
+import com.gis09.fsm.service.FSMService;
+import com.gis09.fsm.subscription.Queue;
+import com.gis09.fsm.subscription.Topic;
+
 /**
  * @author xiaohu 
  * 2016年4月10日上午12:56:57
  * @description fsm客户端
  */
 public class FSMClient implements FSMService {
+	private Logger logger=LoggerFactory.getLogger(getClass());
 	private ScheduledExecutorService executorService = Executors
 			.newScheduledThreadPool(1);
 	private Bootstrap bootstrap = new Bootstrap();// 创建一个启动器
 	private EventLoopGroup group = new NioEventLoopGroup();
 	private Channel channel;
-	private volatile Session session;
 	private ClientConfig clientConfig;
+	private List<Queue> queues; //该客户端订阅的queues 消息队列
 	/**
 	 * 构造函数 必须传入一个clientConfig
 	 * @param clientConfig
@@ -42,11 +47,10 @@ public class FSMClient implements FSMService {
 	public FSMClient(ClientConfig clientConfig) {
 		super();
 		this.clientConfig = clientConfig;
-		new LoginHandler(this);
 	}
 
 	public void connect() {
-		final LoginHandler loginHandler=new LoginHandler(this);
+		final LoginHandler loginHandler=new LoginHandler();
 		final HeartReqHandler heartReqHandler=new HeartReqHandler();
 		try {
 			bootstrap.group(group).channel(NioSocketChannel.class)
@@ -71,7 +75,7 @@ public class FSMClient implements FSMService {
 			channel = future.channel();
 			channel.closeFuture().sync();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("client occur exception {}",e.getMessage());
 		} finally {
 			executorService.execute(new Runnable() {
 				@Override
@@ -91,10 +95,6 @@ public class FSMClient implements FSMService {
 		if (channel.isOpen()) {
 			
 		}
-	}
-	//获取当前的session
-	public Session getSession() {
-		return session;
 	}
 	@Override
 	public void start() {

@@ -7,7 +7,7 @@ public class StoreMessage implements StoreAble {
 
 	@Override
 	public int compareTo(Object o) {
-		return 0;
+		return this.compareTo(o);
 	}
 	public StoreAble warpper(Message message){
 		return null;

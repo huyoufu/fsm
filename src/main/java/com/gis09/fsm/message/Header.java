@@ -21,7 +21,7 @@ public class Header {
 	public static final byte TYPE_PRIORITY_DEFAULT=0x17;
 	private int version=0x20160101;//版本号
 	private int length; //消息长度
-	private long sessionId;//sessionId 
+	private long sessionId;//sessionId  这里其实应该指的是客户端id
 	private Byte type; //消息类型
 	private Byte priority=TYPE_PRIORITY_DEFAULT; //消息优先级别
 	private Map<String, Object> attachment=new HashMap<String, Object>(); //附件

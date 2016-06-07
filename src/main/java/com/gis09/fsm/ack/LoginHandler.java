@@ -18,10 +18,8 @@ import com.gis09.fsm.session.SessionContext;
  */
 public class LoginHandler extends ChannelHandlerAdapter {
 	private Logger log = LoggerFactory.getLogger(getClass());
-	private FSMClient fsmClient;//聚合客户端
-	public LoginHandler(FSMClient fsmClient) {
+	public LoginHandler() {
 		super();
-		this.fsmClient = fsmClient;
 	}
 
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
@@ -47,7 +45,6 @@ public class LoginHandler extends ChannelHandlerAdapter {
 					// 返回一个sessionId 这时候要把该SessionId 保存起来
 				}
 				//将sessionid设置到当前session中
-				this.fsmClient.getSession().setSessionId(String.valueOf(message.getHeader().getSessionId()));
 				ctx.fireChannelRead(msg);
 			}
 		} else {
