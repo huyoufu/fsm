@@ -1,7 +1,7 @@
 package com.gis09.fsm.id;
 /**
  * @author xiaohu
- * 2016年4月17日下午6:46:26
+ * 2016年4月17日下午6:46:27
  * @description id生成器
  */
 public class IdGenerator {
