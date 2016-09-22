@@ -8,6 +8,10 @@ public class IdGenerator {
 	private static final IdGeneratorProvider PROVIDER;
 	static{
 		PROVIDER=new MemoryIdGeneratorProvider();
+		
+		
+		
+		
 	}
 	/**
 	 * 
