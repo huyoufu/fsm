@@ -35,4 +35,8 @@ public class IdGenerator {
 	public static long timeRand(){
 		return PROVIDER.timeRand();
 	}
+	public static void main(String[] args) {
+		String uuid = uuid();
+		System.out.println(uuid);
+	}
 }
